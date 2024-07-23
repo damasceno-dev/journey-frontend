@@ -1,5 +1,6 @@
 import {Mail, User, X} from "lucide-react";
 import {FormEvent} from "react";
+import {Button} from "../../components/button.tsx";
 
 interface ConfirmTripModalProps {
     setIsConfirmTripModalOpen: (isConfirmTripModalOpen: boolean) => void;
@@ -39,9 +40,9 @@ export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip}: Confir
                             className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
                         />
                     </div>
-                    <button type="submit" className="bg-lime-300 w-full justify-center text-lime-950 rounded-lg px-5 py-2 font-medium flex items-center gap-2 hover:bg-lime-400 transition">
+                    <Button type="submit" size="full">
                         Confirmar criação da viagem
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>

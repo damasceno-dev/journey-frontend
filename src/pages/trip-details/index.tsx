@@ -5,6 +5,7 @@ import {ImportantLinks} from "./important-links.tsx";
 import Guests from "./guests.tsx";
 import {Activities} from "./activities.tsx";
 import Header from "./header.tsx";
+import {Button} from "../../components/button.tsx";
 
 export function TripDetailsPage() {
     const [modalCreateActivityOpen, setModalCreateActivityOpen] = useState(false);
@@ -16,10 +17,10 @@ export function TripDetailsPage() {
                 <div className="flex-1 space-y-6 px-7">
                     <div className="flex items-center justify-between">
                         <h2 className="text-3xl font-semibold">Atividades</h2>
-                        <button onClick={() => setModalCreateActivityOpen(true)} className="bg-lime-300 text-lime-950 rounded-lg px-5 py-2 font-bold flex items-center gap-2 hover:bg-lime-100 transition duration-500">
+                        <Button onClick={() => setModalCreateActivityOpen(true)}>
                             <Plus className="size-5"/>
                             Cadastrar atividade
-                        </button>
+                        </Button>
                     </div>
                     <Activities/>
                 </div>

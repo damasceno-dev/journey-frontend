@@ -1,8 +1,8 @@
 import {Calendar, MapPin, Settings2} from "lucide-react";
+import {Button} from "../../components/button";
 
 export default function Header() {
     return (
-
         <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">
             <div className="flex items-center gap-2">
                 <MapPin className="size-5 text-zinc-400"/>
@@ -16,10 +16,10 @@ export default function Header() {
                 </div>
                 <div className="w-px h-6 bg-zinc-800"></div>
 
-                <button className="bg-zinc-800 text-zinc-400 rounded-lg px-5 py-2 font-bold flex items-center gap-2 hover:bg-zinc-700 transition">
+                <Button bgColor="secondary">
                     Alterar local/data
                     <Settings2 className="size-5"/>
-                </button>
+                </Button>
             </div>
 
 
