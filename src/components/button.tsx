@@ -14,26 +14,29 @@ const variants = {
 }
 interface ButtonProps extends ComponentProps<"button"> {
     children: ReactNode;
-    bgColor?: string;
-    size?: string;
+    bgColor?: "default" | "secondary";
+    size?: "default" | "full";
     
 }
 
 export function Button({ children, bgColor = variants.bgColor.default, size = variants.size.default, ...rest }: ButtonProps) {
+    
+    let bgColorApplied, sizeApplied;
+    
     if (bgColor == "secondary") {
-        bgColor = variants.bgColor.secondary
+        bgColorApplied = variants.bgColor.secondary
     } else {
-        bgColor = variants.bgColor.default
+        bgColorApplied = variants.bgColor.default
     }
     
     if (size == "full") {
-        size = variants.size.full
+        sizeApplied = variants.size.full
     } else {
-        size = variants.size.default
+        sizeApplied = variants.size.default
     }
     
     return (
-        <button {...rest} className={variants.base + " " + bgColor + " " + size}>
+        <button {...rest} className={`${variants.base} ${bgColorApplied} ${sizeApplied}`}>
             {children}
         </button>
     )
