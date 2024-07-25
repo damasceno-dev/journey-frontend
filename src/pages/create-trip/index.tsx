@@ -4,6 +4,7 @@ import {ModalInviteGuests} from "./modal-invite-guests.tsx";
 import {ModalConfirmTrip} from "./modal-confirm-trip.tsx";
 import {DestinationAndDateStep} from "./steps/destination-and-date-step.tsx";
 import {InviteGuestsStep} from "./steps/invite-guests-step.tsx";
+import {DateRange} from "react-day-picker";
 
 export function CreateTripPage() {
     const navigate = useNavigate();
@@ -14,6 +15,10 @@ export function CreateTripPage() {
     const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
     const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false)
 
+    const [destination, setDestination] = useState('');
+    const [ownerData, setOwnerData] = useState({name: '', email:''});
+    const [startAndEndDates, setStartAndEndDates] = useState<DateRange | undefined>();
+    
     function handleAddEmailToInvite(event: FormEvent) {
         event.preventDefault();
         if (typedEmail.trim() === '') {
@@ -32,7 +37,10 @@ export function CreateTripPage() {
 
     function createTrip(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        navigate('/trips/123')
+        console.log(destination);
+        console.log(startAndEndDates);
+        console.log(ownerData);
+        // navigate('/trips/123')
     }
 
     return (
@@ -47,6 +55,9 @@ export function CreateTripPage() {
                     <DestinationAndDateStep 
                         isGuestInputOpen={isGuestInputOpen} 
                         setIsGuestInputOpen={setIsGuestInputOpen} 
+                        setDestination={setDestination}
+                        startAndEndDates={startAndEndDates}
+                        setStartAndEndDates={setStartAndEndDates}
                     />
                     
                     {isGuestInputOpen &&
@@ -79,6 +90,7 @@ export function CreateTripPage() {
                 <ModalConfirmTrip 
                     setIsConfirmTripModalOpen={setIsConfirmTripModalOpen}
                     createTrip={createTrip}
+                    setOwnerData={setOwnerData}
                 />
             )}
         </div>

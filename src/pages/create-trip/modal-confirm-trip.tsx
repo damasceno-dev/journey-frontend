@@ -1,13 +1,15 @@
 import {Mail, User, X} from "lucide-react";
-import {FormEvent} from "react";
+import {ChangeEvent, FormEvent} from "react";
 import {Button} from "../../components/button.tsx";
 
 interface ConfirmTripModalProps {
     setIsConfirmTripModalOpen: (isConfirmTripModalOpen: boolean) => void;
     createTrip: (event: FormEvent<HTMLFormElement>) => void;
+    setOwnerData: (data: (prevData: { name: string; email: string }) => { name: string; email: string }) => void;
 }
 
-export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip}: ConfirmTripModalProps) {
+export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip, setOwnerData}: ConfirmTripModalProps) {
+
     return (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
             <div className="w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5">
@@ -29,6 +31,7 @@ export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip}: Confir
                             name="name"
                             placeholder="Seu nome completo"
                             className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+                            onChange={(event) => setOwnerData(prevState => ({ ...prevState, name: event.target.value }))}
                         />
                     </div>
                     <div className="h-14 px-4 bg-zinc-950 border-zinc-800 rounded-lg flex items-center gap-2">
@@ -38,6 +41,7 @@ export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip}: Confir
                             type="email"
                             placeholder="Seu e-mail pessoal"
                             className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
+                            onChange={(event) => setOwnerData(prevState => ({ ...prevState, email: event.target.value }))}
                         />
                     </div>
                     <Button type="submit" size="full">

@@ -1,4 +1,4 @@
-import {AtSign, Plus, X} from "lucide-react";
+import {AtSign, Plus, ThumbsUp, X} from "lucide-react";
 import {FormEvent} from "react";
 import {Button} from "../../components/button.tsx";
 
@@ -56,6 +56,9 @@ export function ModalInviteGuests({emailsToInvite, handleAddEmailToInvite, handl
                         <Plus className="size-5"/>
                     </Button>
                 </form>
+                    <Button onClick={() => setIsGuestModalOpen(false)} size="full" bgColor="secondary">
+                        OK
+                    </Button>
             </div>
         </div>
 

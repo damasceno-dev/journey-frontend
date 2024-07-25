@@ -9,18 +9,20 @@ import {ptBR} from "date-fns/locale";
 interface DestinationAndDateProps {
     isGuestInputOpen: boolean;
     setIsGuestInputOpen: (isOpen: boolean) => void;
+    setDestination: (destination: string) => void;
+    startAndEndDates: DateRange | undefined;
+    setStartAndEndDates: (dates: DateRange | undefined) => void;
 }
 
-export function DestinationAndDateStep({isGuestInputOpen, setIsGuestInputOpen} : DestinationAndDateProps) {
+export function DestinationAndDateStep({isGuestInputOpen, setIsGuestInputOpen, setDestination, startAndEndDates, setStartAndEndDates} : DestinationAndDateProps) {
     
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-    const [startAndEndDate, setStartAndEndDate] = useState<DateRange | undefined>()
     
-    const displayedDate = startAndEndDate && startAndEndDate.to && startAndEndDate.from ?
-        format(startAndEndDate.from, "LLL") ==format(startAndEndDate.to,  "LLL") ?
-            format(startAndEndDate.from, "d").concat(' até ').concat(format(startAndEndDate.to,  "d' de 'LLL", {locale: ptBR}))
+    const displayedDate = startAndEndDates && startAndEndDates.to && startAndEndDates.from ?
+        format(startAndEndDates.from, "LLL") ==format(startAndEndDates.to,  "LLL") ?
+            format(startAndEndDates.from, "d").concat(' até ').concat(format(startAndEndDates.to,  "d' de 'LLL", {locale: ptBR}))
             :
-            format(startAndEndDate.from, "d' de 'LLL", {locale: ptBR}).concat(' até ').concat(format(startAndEndDate.to,  "d' de 'LLL", {locale: ptBR}))
+            format(startAndEndDates.from, "d' de 'LLL", {locale: ptBR}).concat(' até ').concat(format(startAndEndDates.to,  "d' de 'LLL", {locale: ptBR}))
         
         : null;
     
@@ -30,6 +32,7 @@ export function DestinationAndDateStep({isGuestInputOpen, setIsGuestInputOpen} :
                 <MapPin className="size-5 text-zinc-400"/>
                 <input type="text" placeholder="Para onde você vai?" className="bg-transparent text-lg placeholder-zinc-400 outline-none flex-1"
                        disabled={isGuestInputOpen}
+                       onChange={event => setDestination(event.target.value)}
                 />
             </div>
             <button onClick={() => setIsDatePickerOpen(true)} className="flex items-center gap-2 text-left w-[250px]"
@@ -44,22 +47,26 @@ export function DestinationAndDateStep({isGuestInputOpen, setIsGuestInputOpen} :
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
                                 <h2 className="text-l font-bold">Selecione a data</h2>
-                                <button type="button" onClick={() => setIsDatePickerOpen(false)}>
+                                <button type="button" onClick={() => {
+                                    setStartAndEndDates(undefined);
+                                    setIsDatePickerOpen(false);
+                                }}>
                                     <X className="size-5 text-zinc-400"></X>
                                 </button>
                             </div>
                         </div>
-                        <DayPicker mode="range" selected={startAndEndDate} 
-                                   onSelect={setStartAndEndDate}
+                        <DayPicker mode="range" selected={startAndEndDates} 
+                                   onSelect={setStartAndEndDates}
                                    classNames={{
-                                       today: `border-lime-500`,
+                                       today: `border-lime-100`,
                                        selected: `bg-lime-500 rounded-full text-white`,
                                        calendar: `shadow-lg p-5`,
                                        chevron: `fill-lime-500`,
-                                       range_start: `bg-lime-500 rounded-full text-white`,
+                                       range_start: `bg-lime-500 rounded text-white`,
                                        range_end: `bg-lime-500 rounded-full text-white`,
-                                       range_middle: "bg-lime-200 rounded text-black",
+                                       range_middle: "bg-lime-700 rounded text-black",
                                    }}/>
+                        <Button onClick={() => setIsDatePickerOpen(false)} size="full">Confirmar</Button>
                     </div>
                 </div>
             )}
