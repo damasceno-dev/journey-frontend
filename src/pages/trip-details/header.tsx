@@ -1,18 +1,28 @@
 import {Calendar, MapPin, Settings2} from "lucide-react";
 import {Button} from "../../components/button";
+import {displayedDateFunction} from "../../utils/displayedDateFunction.tsx";
+import {Trip} from "./index.tsx";
 
-export default function Header() {
+
+interface HeaderProps {
+    trip: Trip
+}
+
+export default function Header({trip}: HeaderProps) {
+    const displayedDate = trip && trip.startDate && trip.endDate ?
+        displayedDateFunction(trip.startDate, trip.endDate) :
+        null;
     return (
         <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">
             <div className="flex items-center gap-2">
                 <MapPin className="size-5 text-zinc-400"/>
-                <span className="text-zinc-100">Florianópolis, Brasil</span>
+                <span className="text-zinc-100">{trip?.name}</span>
             </div>
 
             <div className="flex items-center gap-5">
                 <div className="flex items-center gap-2">
                     <Calendar className="size-5 text-zinc-400"/>
-                    <span className="text-zinc-100">17 a 23 de Agosto</span>
+                    <span className="text-zinc-100">{displayedDate}</span>
                 </div>
                 <div className="w-px h-6 bg-zinc-800"></div>
 

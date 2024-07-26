@@ -1,14 +1,16 @@
 import {Mail, User, X} from "lucide-react";
-import {ChangeEvent, FormEvent} from "react";
+import {FormEvent} from "react";
 import {Button} from "../../components/button.tsx";
 
 interface ConfirmTripModalProps {
     setIsConfirmTripModalOpen: (isConfirmTripModalOpen: boolean) => void;
     createTrip: (event: FormEvent<HTMLFormElement>) => void;
     setOwnerData: (data: (prevData: { name: string; email: string }) => { name: string; email: string }) => void;
+    destination: string;
+    displayedDate: string | null;
 }
 
-export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip, setOwnerData}: ConfirmTripModalProps) {
+export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip, setOwnerData, destination, displayedDate}: ConfirmTripModalProps) {
 
     return (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
@@ -21,7 +23,7 @@ export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip, setOwne
                         </button>
                     </div>
                     <p className="text-sm text-zinc-400">
-                        Para concluir a criação da viagem para <span className="font-semibold text-zinc-100">Florianópolis, Brasil </span> nas datas de <span className="font-semibold text-zinc-100">16 a 27 de Agosto</span> preencha seus dados abaixo:
+                        Para concluir a criação da viagem para <span className="font-semibold text-zinc-100">{destination}, Brasil </span>, nas datas de <span className="font-semibold text-zinc-100">{displayedDate}</span>, preencha seus dados abaixo:
                     </p>
                 </div>
                 <form action="" className="space-y-3" onSubmit={createTrip}>

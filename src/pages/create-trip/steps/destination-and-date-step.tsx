@@ -3,8 +3,6 @@ import {Button} from "../../../components/button.tsx";
 import {useState} from "react";
 import {DateRange, DayPicker} from "react-day-picker";
 import "react-day-picker/dist/style.css"
-import {format} from "date-fns";
-import {ptBR} from "date-fns/locale";
 
 interface DestinationAndDateProps {
     isGuestInputOpen: boolean;
@@ -12,20 +10,13 @@ interface DestinationAndDateProps {
     setDestination: (destination: string) => void;
     startAndEndDates: DateRange | undefined;
     setStartAndEndDates: (dates: DateRange | undefined) => void;
+    displayedDate: string | null;
 }
 
-export function DestinationAndDateStep({isGuestInputOpen, setIsGuestInputOpen, setDestination, startAndEndDates, setStartAndEndDates} : DestinationAndDateProps) {
+export function DestinationAndDateStep({isGuestInputOpen, setIsGuestInputOpen, setDestination, startAndEndDates, setStartAndEndDates, displayedDate} : DestinationAndDateProps) {
     
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-    
-    const displayedDate = startAndEndDates && startAndEndDates.to && startAndEndDates.from ?
-        format(startAndEndDates.from, "LLL") ==format(startAndEndDates.to,  "LLL") ?
-            format(startAndEndDates.from, "d").concat(' até ').concat(format(startAndEndDates.to,  "d' de 'LLL", {locale: ptBR}))
-            :
-            format(startAndEndDates.from, "d' de 'LLL", {locale: ptBR}).concat(' até ').concat(format(startAndEndDates.to,  "d' de 'LLL", {locale: ptBR}))
         
-        : null;
-    
     return (
         <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
             <div className="flex items-center gap-2 flex-1">

@@ -5,6 +5,7 @@ import {ModalConfirmTrip} from "./modal-confirm-trip.tsx";
 import {DestinationAndDateStep} from "./steps/destination-and-date-step.tsx";
 import {InviteGuestsStep} from "./steps/invite-guests-step.tsx";
 import {DateRange} from "react-day-picker";
+import {displayedDateFunction} from "../../utils/displayedDateFunction.tsx";
 
 export function CreateTripPage() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export function CreateTripPage() {
     const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false)
 
     const [destination, setDestination] = useState('');
-    const [ownerData, setOwnerData] = useState({name: '', email:''});
+    const [, setOwnerData] = useState({name: '', email:''});
     const [startAndEndDates, setStartAndEndDates] = useState<DateRange | undefined>();
     
     function handleAddEmailToInvite(event: FormEvent) {
@@ -34,13 +35,36 @@ export function CreateTripPage() {
     function handleExcludeEmailToInvite(emailToExclude: number) {
         setEmailsToInvite(emailsToInvite.filter((email,index) => index !== emailToExclude));
     }
-
-    function createTrip(event: FormEvent<HTMLFormElement>) {
+    
+    const displayedDate = startAndEndDates && startAndEndDates.from && startAndEndDates.to ?
+        displayedDateFunction(startAndEndDates.from, startAndEndDates.to) :
+        null;
+    
+    async function createTrip(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        console.log(destination);
-        console.log(startAndEndDates);
-        console.log(ownerData);
-        // navigate('/trips/123')
+
+        navigate(`/trips/864d2cd4-8778-4d11-ae5c-b2ac2249ce93`)
+        
+        // if (!destination) {
+        //     alert('Digite a data do destino')
+        //     return;
+        // }
+        //
+        // if (!startAndEndDates || !startAndEndDates.to || !startAndEndDates.from) {
+        //     alert('Defina a data de início e fim da viagem')
+        //     return;
+        // }
+        //
+        //
+        // const response = await api.post('/api/Trips', {
+        //     name: destination,
+        //     startDate: startAndEndDates.from,
+        //     endDate: startAndEndDates.to,
+        // })
+        //
+        // const {id} = response.data
+
+        // navigate(`/trips/${id}`)
     }
 
     return (
@@ -58,6 +82,7 @@ export function CreateTripPage() {
                         setDestination={setDestination}
                         startAndEndDates={startAndEndDates}
                         setStartAndEndDates={setStartAndEndDates}
+                        displayedDate={displayedDate}
                     />
                     
                     {isGuestInputOpen &&
@@ -91,6 +116,8 @@ export function CreateTripPage() {
                     setIsConfirmTripModalOpen={setIsConfirmTripModalOpen}
                     createTrip={createTrip}
                     setOwnerData={setOwnerData}
+                    destination={destination}
+                    displayedDate={displayedDate}
                 />
             )}
         </div>
