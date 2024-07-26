@@ -19,11 +19,11 @@ export function ModalConfirmTrip({setIsConfirmTripModalOpen, createTrip, setOwne
                     <div className="flex items-center justify-between">
                         <h2 className="text-l font-bold">Confirmar criação de viagem</h2>
                         <button type="button" onClick={() => setIsConfirmTripModalOpen(false)}>
-                            <X className="size-5 text-zinc-400"></X>
+                            <X className="p-2 size-8 text-zinc-400 rounded-full hover:bg-black"></X>
                         </button>
                     </div>
-                    <p className="text-sm text-zinc-400">
-                        Para concluir a criação da viagem para <span className="font-semibold text-zinc-100">{destination}, Brasil </span>, nas datas de <span className="font-semibold text-zinc-100">{displayedDate}</span>, preencha seus dados abaixo:
+                    <p className="text-sm text-zinc-400 leading-8">
+                        Para concluir a criação da viagem para <span className="font-semibold text-zinc-100">{destination} </span>, nas datas de <span className="font-semibold text-zinc-100">{displayedDate}</span>, preencha seus dados abaixo:
                     </p>
                 </div>
                 <form action="" className="space-y-3" onSubmit={createTrip}>

@@ -6,65 +6,74 @@ import {DestinationAndDateStep} from "./steps/destination-and-date-step.tsx";
 import {InviteGuestsStep} from "./steps/invite-guests-step.tsx";
 import {DateRange} from "react-day-picker";
 import {displayedDateFunction} from "../../utils/displayedDateFunction.tsx";
+import {api} from "../../lib/axios.ts";
 
 export function CreateTripPage() {
     const navigate = useNavigate();
     
     const [isGuestInputOpen, setIsGuestInputOpen] = useState(false);
     const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
+    const [typedName, setTypedName] = useState('');
     const [typedEmail, setTypedEmail] = useState('');
-    const [emailsToInvite, setEmailsToInvite] = useState<string[]>([])
+    const [participantsToInvite, setParticipantsToInvite] = useState<{ name: string,  email: string}[]>([])
     const [isConfirmTripModalOpen, setIsConfirmTripModalOpen] = useState(false)
 
     const [destination, setDestination] = useState('');
     const [, setOwnerData] = useState({name: '', email:''});
     const [startAndEndDates, setStartAndEndDates] = useState<DateRange | undefined>();
     
-    function handleAddEmailToInvite(event: FormEvent) {
+    function handleAddParticipantsToInvite(event: FormEvent) {
         event.preventDefault();
-        if (typedEmail.trim() === '') {
+        if (typedEmail.trim() === '' || typedName.trim() === '') {
             return;
         }
-        if (emailsToInvite.find(email => email === typedEmail.trim())) {
+        if (participantsToInvite.find(p => p.email === typedEmail.trim())) {
             return;
         }
-        setEmailsToInvite([...emailsToInvite,typedEmail.trim()])
+        setParticipantsToInvite([...participantsToInvite, {name: typedName.trim(), email: typedEmail.trim()}])
+        
         setTypedEmail('')
+        setTypedName('')
     }
 
-    function handleExcludeEmailToInvite(emailToExclude: number) {
-        setEmailsToInvite(emailsToInvite.filter((email,index) => index !== emailToExclude));
+    function handleParticipantsToInvite(emailToExclude: number) {
+        setParticipantsToInvite(participantsToInvite.filter((email,index) => index !== emailToExclude));
     }
-    
+
+    console.log(participantsToInvite)
     const displayedDate = startAndEndDates && startAndEndDates.from && startAndEndDates.to ?
         displayedDateFunction(startAndEndDates.from, startAndEndDates.to) :
         null;
-    
+
+    async function InviteParticipants(id: number, participantsToInvite: { name: string; email: string }[]) {
+        await Promise.all(participantsToInvite.map(p => api.post(`/TripParticipants/${id}/register`, p)));
+    }
     async function createTrip(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        navigate(`/trips/864d2cd4-8778-4d11-ae5c-b2ac2249ce93`)
+        // navigate(`/trips/864d2cd4-8778-4d11-ae5c-b2ac2249ce93`)
         
-        // if (!destination) {
-        //     alert('Digite a data do destino')
-        //     return;
-        // }
-        //
-        // if (!startAndEndDates || !startAndEndDates.to || !startAndEndDates.from) {
-        //     alert('Defina a data de início e fim da viagem')
-        //     return;
-        // }
-        //
-        //
-        // const response = await api.post('/api/Trips', {
-        //     name: destination,
-        //     startDate: startAndEndDates.from,
-        //     endDate: startAndEndDates.to,
-        // })
-        //
-        // const {id} = response.data
+        if (!destination) {
+            alert('Digite a data do destino')
+            return;
+        }
 
-        // navigate(`/trips/${id}`)
+        if (!startAndEndDates || !startAndEndDates.to || !startAndEndDates.from) {
+            alert('Defina a data de início e fim da viagem')
+            return;
+        }
+
+        const response = await api.post('/Trip/register', {
+            name: destination,
+            startDate: startAndEndDates.from,
+            endDate: startAndEndDates.to,
+        })
+
+        const {id} = response.data
+
+        await InviteParticipants(id, participantsToInvite);
+
+        navigate(`/trips/${id}`)
     }
 
     return (
@@ -90,7 +99,7 @@ export function CreateTripPage() {
                             <InviteGuestsStep 
                                 setIsGuestModalOpen={setIsGuestModalOpen}
                                 setIsConfirmTripModalOpen={setIsConfirmTripModalOpen}
-                                emailsToInvite={emailsToInvite}
+                                participantsToInvite={participantsToInvite}
                             />
                         )
                     }
@@ -102,9 +111,11 @@ export function CreateTripPage() {
 
             {isGuestModalOpen && (
                 <ModalInviteGuests
-                    emailsToInvite={emailsToInvite}
-                    handleAddEmailToInvite={handleAddEmailToInvite}
-                    handleExcludeEmailToInvite={handleExcludeEmailToInvite}
+                    participantsToInvite={participantsToInvite}
+                    handleAddParticipantsToInvite={handleAddParticipantsToInvite}
+                    handleParticipantsToInvite={handleParticipantsToInvite}
+                    typedName={typedName}
+                    setTypedName={setTypedName}
                     typedEmail={typedEmail}
                     setTypedEmail={setTypedEmail}
                     setIsGuestModalOpen={setIsGuestModalOpen}

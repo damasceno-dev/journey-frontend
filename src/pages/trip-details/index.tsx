@@ -9,11 +9,18 @@ import {Button} from "../../components/button.tsx";
 import {useParams} from "react-router-dom";
 import {api} from "../../lib/axios.ts";
 
-interface activity {
+export interface activity {
     id: string;
     name: string;
     date: string;
     status: number
+}
+
+export interface participant {
+    id: string;
+    name: string;
+    email: string;
+    isConfirmed: boolean;
 }
 
 export interface Trip {
@@ -22,27 +29,23 @@ export interface Trip {
     startDate: Date;
     endDate: Date;
     activities: activity[];
+    participants: participant[];
 }
 
 export function TripDetailsPage() {
-    const {id} = useParams<{ id: string }>();
     const [modalCreateActivityOpen, setModalCreateActivityOpen] = useState(false);
+    
+    const {id} = useParams<{ id: string }>();
     const [trip, setTrip] = useState<Trip | undefined>()
     useEffect(() => {
-        console.log(id)
-        const fetchTrip = async () => {
-            if (id) {
-                try {
-                    const response = await api.get(`/api/Trips/${id}`);
-                    setTrip(response.data);
-                } catch (error) {
-                    console.error('Failed to fetch trip', error);
-                }
-            }
-        };
-
-        fetchTrip();
+        api.get(`/Trip/${id}`).then(response => setTrip(response.data))
     }, [id])
+    
+    if (!trip) {
+        return <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
+                    <h1>Carregando viagem...</h1>
+                </div>
+    } 
     
     return (
         <div className="max-w-6xl py-10 mx-auto space-y-8">
@@ -61,7 +64,7 @@ export function TripDetailsPage() {
                 <div className="w-80 space-y-10">
                     <ImportantLinks/>
                     <div className="w-full h-px bg-zinc-800"></div>
-                    <Guests/>
+                    <Guests participants={trip.participants}/>
                 </div>
             </main>
 

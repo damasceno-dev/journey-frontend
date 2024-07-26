@@ -4,12 +4,12 @@ import {Button} from "../../../components/button.tsx";
 interface InviteGuestsStepProps {
     setIsGuestModalOpen: (IsGuestModalOpen: boolean) => void;
     setIsConfirmTripModalOpen: (IsConfirmTripModalOpen: boolean) => void;
-    emailsToInvite: string[];
+    participantsToInvite: { name: string,  email: string}[];
 }
 
-export function InviteGuestsStep({setIsGuestModalOpen, emailsToInvite, setIsConfirmTripModalOpen}: InviteGuestsStepProps) {
+export function InviteGuestsStep({setIsGuestModalOpen, participantsToInvite, setIsConfirmTripModalOpen}: InviteGuestsStepProps) {
     function pluralMessageOnEmailsToInvite() {
-        if (emailsToInvite.length === 1) {
+        if (participantsToInvite.length === 1) {
             return 'pessoa convidada'
         } else {
             return 'pessoas convidadas'
@@ -20,9 +20,9 @@ export function InviteGuestsStep({setIsGuestModalOpen, emailsToInvite, setIsConf
         <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
             <button type="button" onClick={() => setIsGuestModalOpen(true)} className="flex items-center gap-3 flex-1 text-left hover:underline">
                 <UserRoundPlus className="size-5 text-zinc-400"/>
-                {emailsToInvite.length > 0 ?
+                {participantsToInvite.length > 0 ?
                     (
-                        <span className="text-zinc-100 text-lg flex-1">{emailsToInvite.length} {pluralMessageOnEmailsToInvite()}</span>
+                        <span className="text-zinc-100 text-lg flex-1">{participantsToInvite.length} {pluralMessageOnEmailsToInvite()}</span>
                     )
                     :
                     (
