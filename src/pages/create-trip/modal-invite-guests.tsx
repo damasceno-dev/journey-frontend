@@ -45,9 +45,9 @@ export function ModalInviteGuests({participantsToInvite, handleAddParticipantsTo
 
                 <div className="w-full h-px bg-zinc-800"></div>
 
-                <form onSubmit={handleAddParticipantsToInvite} action="" className="p-2.5 bg-zinc-950 border-zinc-800 rounded-lg flex justify-between">
-                    <div className="flex flex-1 flex-col gap-7">
-                        <div className="flex items-center flex-1 gap-2">
+                <form onSubmit={handleAddParticipantsToInvite} action="" className="p-2.5 bg-zinc-900 border-white rounded-lg flex justify-between">
+                    <div className="flex flex-1 flex-col gap-3">
+                        <div className="flex items-center flex-1 gap-2 bg-zinc-950 p-3">
                             <UserRoundPlus className="text-zinc-400 size-5"/>
                             <input
                                 type="text"
@@ -57,8 +57,8 @@ export function ModalInviteGuests({participantsToInvite, handleAddParticipantsTo
                                 onChange={(e) => setTypedName(e.target.value)}
                             />
                         </div>
-                        <div className="flex items-center flex-1 gap-2">
-                            <AtSign className="text-zinc-400 size-5"></AtSign>
+                        <div className="flex items-center flex-1 gap-2 bg-zinc-950 p-3">
+                            <AtSign className="text-zinc-400 size-5"/>
                             <input
                                 type="text"
                                 placeholder="Digite o e-mail do convidado"

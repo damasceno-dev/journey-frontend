@@ -34,12 +34,13 @@ export interface Trip {
 
 export function TripDetailsPage() {
     const [modalCreateActivityOpen, setModalCreateActivityOpen] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     
     const {id} = useParams<{ id: string }>();
     const [trip, setTrip] = useState<Trip | undefined>()
     useEffect(() => {
         api.get(`/Trip/${id}`).then(response => setTrip(response.data))
-    }, [id])
+    }, [id, refresh])
     
     if (!trip) {
         return <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
@@ -49,7 +50,7 @@ export function TripDetailsPage() {
     
     return (
         <div className="max-w-6xl py-10 mx-auto space-y-8">
-            {trip && <Header trip={trip}/>}
+            <Header trip={trip}/>
             <main className="flex gap-16">
                 <div className="flex-1 space-y-6 px-7">
                     <div className="flex items-center justify-between">
@@ -59,7 +60,7 @@ export function TripDetailsPage() {
                             Cadastrar atividade
                         </Button>
                     </div>
-                    <Activities/>
+                    <Activities activities={trip.activities}/>
                 </div>
                 <div className="w-80 space-y-10">
                     <ImportantLinks/>
@@ -70,7 +71,9 @@ export function TripDetailsPage() {
 
             {modalCreateActivityOpen && (
                 <CreateActivityModal
+                    id={trip.id}
                     setModalCreateActivityOpen={setModalCreateActivityOpen}
+                    onActivityCreated={() => setRefresh(!refresh)}
                 />
             )}
             
